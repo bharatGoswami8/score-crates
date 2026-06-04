@@ -17,6 +17,7 @@ The SCORE Crates repository implements a streamlined approach for Rust crate dep
 
 When multiple Bazel modules depend on each other and both pull in Rust crates via rules_rust, Bazel pulls in the same crate multiple times. This leads to name clashes in the Rust compiler, even when using identical versions.
 
+
 #### Without SCORE Crates (❌ Problem):
 ```
     Module A                    Module B
