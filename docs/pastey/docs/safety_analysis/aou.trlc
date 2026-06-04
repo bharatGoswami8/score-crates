@@ -26,5 +26,5 @@ ScoreReq.AoU PasteyUsedInValidSyntaxPositions {
     safety = ScoreReq.Asil.B
     note = "The pastey crate emits raw tokens into the surrounding code without additional context checks. Using it in invalid positions will result in compilation errors or undefined behavior."
     version = 1
-    mitigates = "InvalidTokenPlacement, CompilationErrors, UndefinedBehavior"
+    mitigates = "InvalidTokenPlacement, CompilationErrors"
 }

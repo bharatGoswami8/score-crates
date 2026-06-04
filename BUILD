@@ -3,6 +3,13 @@
 # Generated aliases for crate_index entries
 # Generated on: Wed May 20 11:24:44 IST 2026
 
+# Documentation target for CI/CD workflows
+alias(
+    name = "docs",
+    actual = "//docs/pastey/docs:pastey_doc",
+    visibility = ["//visibility:public"],
+)
+
 alias(
     name = "adler32",
     actual = "@crate_index//:adler32",

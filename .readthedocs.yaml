@@ -1,0 +1,62 @@
+# *******************************************************************************
+# Copyright (c) 2026 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
+
+# Read the Docs configuration file for Sphinx builds
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+#
+# Project: SCORE Crates - Pastey Documentation
+# This configuration installs Bazel and runs the full build pipeline on Read the Docs.
+# Generated artifacts (TRLC requirements, FMEA, RST files) are created during the build.
+
+# Required version 2 for all modern Read the Docs builds
+version: 2
+
+# Version control settings (optional - RTD will build all active versions by default)
+# To control which branches/tags are built, configure in RTD dashboard: Admin → Versions
+# URLs will be: /en/latest/, /en/stable/, /en/v1.0.0/, etc.
+
+# Set the OS, Python version and other Bazel dependencies for the build environment
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.12"
+  apt_packages:
+    - curl
+    - gnupg
+    - libcairo2-dev
+    - pkg-config
+    - python3-dev
+    - graphviz
+    - plantuml
+    - default-jre
+  jobs:
+    pre_install:
+      # Install Bazelisk (Bazel version manager) to local bin directory
+      - mkdir -p $HOME/.local/bin
+      - curl -Lo $HOME/.local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64
+      - chmod +x $HOME/.local/bin/bazel
+      # Use absolute path to bin as PATH does not persist across jobs
+      - $HOME/.local/bin/bazel --version
+    pre_build:
+      # Run Bazel to generate documentation artifacts (TRLC requirements, FMEA, RST files)
+      - $HOME/.local/bin/bazel build //docs/pastey/docs:pastey_doc
+      # Copy generated HTML to docs/ for Read the Docs
+      - mkdir -p $READTHEDOCS_OUTPUT/html
+      - cp -r bazel-bin/docs/pastey/docs/pastey_doc/html/* $READTHEDOCS_OUTPUT/html/ || cp -r bazel-out/k8-fastbuild/bin/docs/pastey/docs/pastey_doc/html/* $READTHEDOCS_OUTPUT/html/
+
+# Sphinx configuration (we're building with Bazel, so this is minimal)
+sphinx:
+  configuration: null  # We use Bazel's Sphinx build instead of RTD's
+
+# Formats to build (HTML is built by Bazel)
+formats: []

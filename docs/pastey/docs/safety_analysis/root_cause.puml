@@ -10,14 +10,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-package PasteyFeatReq
 
-import ScoreReq
-import PasteySysReq
+@startuml pastey_root_causes
 
-ScoreReq.FeatReq FEAT_PASTEY_001 {
-    description = "The pastey crate shall provide compile-time token manipulation capabilities for procedural macro expansion in Rust applications."
-    safety = ScoreReq.Asil.B
-    derived_from = [PasteySysReq.ASR_RUST_CRATE@1]
-    version = 1
-}
+!include fta_metamodel.puml
+
+$TopEvent("Wrong or missing identifier", "PasteyFailureModes.CompilationErrors")
+
+$OrGate("Gate1", "TopEvent")
+
+$BasicEvent("paste! used in invalid syntax position", "PasteyFailureModes.InvalidTokenPlacement", "Gate1")
+
+$BasicEvent("Compilation error due to empty token stream", "PasteyAoU.PasteyRustCompilerCertified", "Gate1")
+
+$BasicEvent("Unsupported modifier generate compilation error", "PasteyAoU.PasteyUsedInValidSyntaxPositions", "Gate1")
+@enduml
