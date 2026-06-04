@@ -41,4 +41,5 @@ dependable_element(
     components = ["//docs/pastey/docs/component:pastey_component"],
     dependability_analysis = [":pastey_dependability_analysis"],
     tests = ["//docs/pastey/tests:pastey_test"],
+    visibility = ["//visibility:public"],
 )
